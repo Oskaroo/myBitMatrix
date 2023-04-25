@@ -32,18 +32,87 @@ public partial class BitMatrix
     using System.Collections;
     using System.Text;
     public partial class BitMatrix
+{
+    public override string ToString()
     {
-        public override string ToString()
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < NumberOfRows; i++)
         {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < NumberOfRows; i++)
+            for (int j = 0; j < NumberOfColumns; j++)
             {
-                for (int j = 0; j < NumberOfColumns; j++)
-                {
-                    sb.Append(BoolToBit(data[i * NumberOfColumns + j]) == 1 ? "1" : "0");
-                }
-                sb.AppendLine();
+                sb.Append(BoolToBit(data[i * NumberOfColumns + j]) == 1 ? "1" : "0");
             }
-            return sb.ToString();
+            sb.AppendLine();
         }
+        return sb.ToString();
     }
+}
+            // koniec zadania 01 !!!
+
+
+// W następnym zadaniu tj 02. BitMatrix - dodatkowe konstruktory !!! w miejscu poleceń należy wkleić ten kod 
+using System;
+using System.Collections;
+
+public partial class BitMatrix
+{
+    public BitMatrix(int numberOfRows, int numberOfColumns, params int[] bits)
+    {
+        if (numberOfColumns < 1 || numberOfRows < 1)
+            throw new ArgumentOutOfRangeException("Incorrect size of matrix");
+        data = new BitArray(numberOfRows * numberOfColumns);
+        if (bits != null && bits.Length > 0)
+        {
+            for (int i = 0; i < bits.Length && i < data.Length; i++)
+            {
+                data[i] = BitToBool(bits[i]);
+            }
+        }
+        NumberOfRows = numberOfRows;
+        NumberOfColumns = numberOfColumns;
+    }
+    public BitMatrix(int[,] bits)
+    {
+        if (bits == null)
+            throw new NullReferenceException("bits array is null");
+        int numberOfRows = bits.GetLength(0);
+        int numberOfColumns = bits.GetLength(1);
+        if (numberOfRows < 1 || numberOfColumns < 1)
+            throw new ArgumentOutOfRangeException("Incorrect size of matrix");
+        data = new BitArray(numberOfRows * numberOfColumns);
+        bool anyValue = false;
+        for (int i = 0; i < numberOfRows; i++)
+        {
+            for (int j = 0; j < numberOfColumns; j++)
+            {
+                data[i * numberOfColumns + j] = BitToBool(bits[i, j]);
+                if (bits[i, j] != 0)
+                    anyValue = true;
+            }
+        }
+        if (!anyValue)
+            throw new ArgumentOutOfRangeException("bits array does not contain any non-zero values");
+        NumberOfRows = numberOfRows;
+        NumberOfColumns = numberOfColumns;
+    }
+    public BitMatrix(bool[,] bits)
+    {
+        if (bits == null)
+            throw new NullReferenceException("bits array is null");
+        int numberOfRows = bits.GetLength(0);
+        int numberOfColumns = bits.GetLength(1);
+        if (numberOfRows < 1 || numberOfColumns < 1)
+            throw new ArgumentOutOfRangeException("Incorrect size of matrix");
+        data = new BitArray(numberOfRows * numberOfColumns);
+        for (int i = 0; i < numberOfRows; i++)
+        {
+            for (int j = 0; j < numberOfColumns; j++)
+            {
+                data[i * numberOfColumns + j] = bits[i, j];
+            }
+        }
+        NumberOfRows = numberOfRows;
+        NumberOfColumns = numberOfColumns;
+    }
+}
+            // Koniec zadania 02 !

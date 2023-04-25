@@ -26,7 +26,7 @@ public partial class BitMatrix
     //Wyżej podany kod, jest to wstęp do zadań.
 
 
-    // W drugim zadaniu należy dodać metodę ToString, aby to zrobić w wierszu poleceń należy wpisać
+    // W drugim zadaniu tj.01. BITMATRIX - TOSTRING TEST !!! należy dodać metodę ToString, aby to zrobić w wierszu poleceń należy wpisać
 
     using System;
     using System.Collections;

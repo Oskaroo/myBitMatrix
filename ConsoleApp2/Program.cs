@@ -116,3 +116,38 @@ public partial class BitMatrix
     }
 }
             // Koniec zadania 02 !
+
+            // zadanie 03 BitMatrix - equals !!! Skopiuj kod i wklej w okno odpowiedzi
+            using System;
+using System.Collections;
+
+public partial class BitMatrix : IEquatable<BitMatrix>
+{
+    public bool Equals(BitMatrix other)
+    {
+        if (ReferenceEquals(this, other))
+            return true;
+
+        if (ReferenceEquals(other, null))
+            return false;
+
+        if (NumberOfColumns != other.NumberOfColumns || NumberOfRows != other.NumberOfRows)
+            return false;
+
+        for (int i = 0; i < NumberOfRows * NumberOfColumns; i++)
+        {
+            if (data[i] != other.data[i])
+                return false;
+        }
+        return true;
+    }
+
+    public override bool Equals(object obj) => Equals(obj as BitMatrix);
+
+    public override int GetHashCode() => data.GetHashCode();
+
+    public static bool operator ==(BitMatrix left, BitMatrix right) => Equals(left, right);
+    public static bool operator !=(BitMatrix left, BitMatrix right) => !Equals(left, right);
+}
+
+                // koniec zadania 3

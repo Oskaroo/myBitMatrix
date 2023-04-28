@@ -150,4 +150,79 @@ public partial class BitMatrix : IEquatable<BitMatrix>
     public static bool operator !=(BitMatrix left, BitMatrix right) => !Equals(left, right);
 }
 
-                // koniec zadania 3
+                    // koniec zadania 3
+                // Zadanie 4 - implementacja indeksera i iteratora
+                using System;
+using System.Collections;
+using System.Collections.Generic;
+
+
+public partial class BitMatrix : IEquatable<BitMatrix>, IEnumerable<int>
+{
+    public int this[int i1, int i2]
+    {
+        get
+        {
+            if (i1 >= NumberOfRows || i1 < 0 || i2 >= NumberOfColumns || i2 < 0)
+                throw new IndexOutOfRangeException();
+
+            return BoolToBit(data[i1 * NumberOfRows + i2]);
+        }
+
+        set
+        {
+            if (i1 >= NumberOfRows || i1 < 0 || i2 >= NumberOfColumns || i2 < 0)
+                throw new IndexOutOfRangeException();
+
+            data[i1 * NumberOfRows + i2] = BitToBool(value);
+        }
+    }
+    public IEnumerator GetEnumerator()
+    {
+        for (int i = 0; i < NumberOfRows * NumberOfColumns; i++)
+        {
+            yield return BoolToBit(data[i]);
+        }
+    }
+    IEnumerator<int> IEnumerable<int>.GetEnumerator() => (IEnumerator<int>)GetEnumerator();
+}
+
+                                //koniec zadnia 4
+                    //Zadanie Zadanie 5 - implementacja interfejsu ICloneable
+                    using System;
+using System.Collections;
+using System.Collections.Generic;
+
+public partial class BitMatrix : IEquatable<BitMatrix>, IEnumerable<int>, ICloneable
+{
+    public object Clone()
+    {
+        int[] bits = new int[NumberOfRows * NumberOfColumns];
+
+        for (int i = 0; i < NumberOfColumns * NumberOfRows; i++)
+            bits[i] = BoolToBit(data[i]);
+
+        return new BitMatrix(NumberOfRows, NumberOfColumns, bits);
+    }
+}
+                                            // koniec zadania 5
+                                        // Zadanie 6 - parsowanie napisu
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+public partial class BitMatrix : IEquatable<BitMatrix>, IEnumerable<int>, ICloneable
+{
+    public object Clone()
+    {
+        int[] bits = new int[NumberOfRows * NumberOfColumns];
+
+        for (int i = 0; i < NumberOfColumns * NumberOfRows; i++)
+            bits[i] = BoolToBit(data[i]);
+
+        return new BitMatrix(NumberOfRows, NumberOfColumns, bits);
+    }
+}
+
+                                // Koniec zadania 6

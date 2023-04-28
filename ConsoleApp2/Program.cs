@@ -208,21 +208,137 @@ public partial class BitMatrix : IEquatable<BitMatrix>, IEnumerable<int>, IClone
                                             // koniec zadania 5
                                         // Zadanie 6 - parsowanie napisu
 
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
 public partial class BitMatrix : IEquatable<BitMatrix>, IEnumerable<int>, ICloneable
 {
-    public object Clone()
+    public static BitMatrix Parse(string s)
     {
-        int[] bits = new int[NumberOfRows * NumberOfColumns];
+        if (s == null || s.Length == 0)
+            throw new ArgumentNullException();
 
-        for (int i = 0; i < NumberOfColumns * NumberOfRows; i++)
-            bits[i] = BoolToBit(data[i]);
+        s = s.Trim();
+        string[] rows = s.Split(Environment.NewLine);
 
-        return new BitMatrix(NumberOfRows, NumberOfColumns, bits);
+        List<int> bits = new List<int>();
+        int lastSize = rows[0].Trim().Length;
+
+        foreach (string row in rows)
+        {
+            int size = 0;
+
+            foreach (char c in row.Trim())
+            {
+                if (c == '1' || c == '0')
+                {
+                    bits.Add(c == '1' ? 1 : 0);
+                    size++;
+                    continue;
+                }
+
+                throw new FormatException();
+            }
+
+            if (lastSize != size)
+                throw new FormatException();
+        }
+
+        return new BitMatrix(rows.Length, bits.Count / rows.Length, bits.ToArray());
     }
+
+    public static bool TryParse(string s, out BitMatrix result)
+    {
+        try
+        {
+            result = Parse(s);
+        }
+        catch
+        {
+            result = null;
+            return false;
+        }
+        return true;
+    }
+
 }
 
-                                // Koniec zadania 6
+                            // Koniec zadania 6
+                    //Zadanie Zadanie 7 - konwersje jawne i niejawne
+                    // file: BitMatrixPartial.cs
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+public partial class BitMatrix : IEquatable<BitMatrix>, IEnumerable<int>, ICloneable
+{
+    public static explicit operator BitMatrix(int[,] arr)
+    {
+        if (arr == null)
+            throw new NullReferenceException();
+
+        if (arr.GetLength(0) == 0)
+            throw new ArgumentOutOfRangeException();
+
+        return new BitMatrix(arr);
+    }
+
+    public static implicit operator int[,](BitMatrix matrix)
+    {
+        int[,] arr = new int[matrix.NumberOfRows, matrix.NumberOfColumns];
+
+        for (int i = 0; i < matrix.NumberOfRows; i++)
+        {
+            for (int j = 0; j < matrix.NumberOfColumns; j++)
+            {
+                arr[i, j] = matrix[i, j];
+            }
+        }
+
+        return arr;
+    }
+
+    public static explicit operator BitMatrix(bool[,] arr)
+    {
+        if (arr == null)
+            throw new NullReferenceException();
+
+        if (arr.GetLength(0) == 0)
+            throw new ArgumentOutOfRangeException();
+
+        return new BitMatrix(arr);
+    }
+
+    public static implicit operator bool[,](BitMatrix matrix)
+    {
+        bool[,] arr = new bool[matrix.NumberOfRows, matrix.NumberOfColumns];
+
+        for (int i = 0; i < matrix.NumberOfRows; i++)
+        {
+            for (int j = 0; j < matrix.NumberOfColumns; j++)
+            {
+                arr[i, j] = BitToBool(matrix[i, j]);
+            }
+        }
+
+        return arr;
+    }
+
+    public static explicit operator BitArray(BitMatrix matrix)
+    {
+        BitArray arr = new BitArray(matrix.NumberOfRows * matrix.NumberOfColumns);
+
+        for (int i = 0; i < matrix.NumberOfRows; i++)
+        {
+            for (int j = 0; j < matrix.NumberOfColumns; j++)
+            {
+                arr[i * matrix.NumberOfColumns + j] = BitToBool(matrix[i, j]);
+            }
+        }
+
+        return arr;
+    }
+}
+                                //Koniec zadania 7

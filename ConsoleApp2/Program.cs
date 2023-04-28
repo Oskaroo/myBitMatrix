@@ -341,4 +341,151 @@ public partial class BitMatrix : IEquatable<BitMatrix>, IEnumerable<int>, IClone
         return arr;
     }
 }
-                                //Koniec zadania 7
+                                        //Koniec zadania 7
+                                    //Zadanie 8 - Operacje bitowe
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+public partial class BitMatrix : IEquatable<BitMatrix>, IEnumerable<int>, ICloneable
+{
+    private bool MatrixCom(BitMatrix other)
+    {
+        return NumberOfRows == other.NumberOfRows && NumberOfColumns == other.NumberOfColumns;
+    }
+
+    public BitMatrix And(BitMatrix other)
+    {
+        if (other == null)
+            throw new ArgumentNullException(nameof(other));
+
+        if (!MatrixCom(other))
+            throw new ArgumentException("Matrices have different sizes.");
+
+        for (int i = 0; i < data.Length; i++)
+        {
+            data[i] = data[i] && other.data[i];
+        }
+
+        return this;
+    }
+    public BitMatrix Or(BitMatrix other)
+    {
+        if (other == null)
+            throw new ArgumentNullException(nameof(other));
+
+        if (!MatrixCom(other))
+            throw new ArgumentException("Matrices have different sizes.");
+
+        for (int i = 0; i < data.Length; i++)
+        {
+            data[i] = data[i] || other.data[i];
+        }
+
+        return this;
+    }
+
+    public BitMatrix Xor(BitMatrix other)
+    {
+        if (other == null)
+            throw new ArgumentNullException(nameof(other));
+
+        if (!MatrixCom(other))
+            throw new ArgumentException("Matrices have different sizes.");
+
+        for (int i = 0; i < data.Length; i++)
+        {
+            data[i] = data[i] ^ other.data[i];
+        }
+
+        return this;
+    }
+
+    public BitMatrix Not()
+    {
+        for (int i = 0; i < data.Length; i++)
+        {
+            data[i] = !data[i];
+        }
+
+        return this;
+    }
+    public static BitMatrix operator &(BitMatrix a, BitMatrix b)
+    {
+        if (a == null || b == null)
+            throw new ArgumentNullException();
+        if (!a.MatrixCom(b))
+            throw new ArgumentException("Matrices are not compatible");
+
+        BitMatrix result = new BitMatrix(a.NumberOfRows, a.NumberOfColumns);
+
+        for (int i = 0; i < a.NumberOfRows; i++)
+        {
+            for (int j = 0; j < a.NumberOfColumns; j++)
+            {
+                result[i, j] = a[i, j] & b[i, j];
+            }
+        }
+
+        return result;
+    }
+    public static BitMatrix operator |(BitMatrix a, BitMatrix b)
+    {
+        if (a == null || b == null)
+            throw new ArgumentNullException();
+        if (!a.MatrixCom(b))
+            throw new ArgumentException("Matrices are not compatible");
+
+        BitMatrix result = new BitMatrix(a.NumberOfRows, a.NumberOfColumns);
+
+        for (int i = 0; i < a.NumberOfRows; i++)
+        {
+            for (int j = 0; j < a.NumberOfColumns; j++)
+            {
+                result[i, j] = a[i, j] | b[i, j];
+            }
+        }
+
+        return result;
+    }
+
+    public static BitMatrix operator ^(BitMatrix a, BitMatrix b)
+    {
+        if (a == null || b == null)
+            throw new ArgumentNullException();
+        if (!a.MatrixCom(b))
+            throw new ArgumentException("Matrices are not compatible");
+
+        BitMatrix result = new BitMatrix(a.NumberOfRows, a.NumberOfColumns);
+
+        for (int i = 0; i < a.NumberOfRows; i++)
+        {
+            for (int j = 0; j < a.NumberOfColumns; j++)
+            {
+                result[i, j] = a[i, j] ^ b[i, j];
+            }
+        }
+
+        return result;
+    }
+    public static BitMatrix operator !(BitMatrix matrix)
+    {
+        if (matrix == null)
+        {
+            throw new ArgumentNullException(nameof(matrix));
+        }
+
+        var result = new BitMatrix(matrix.NumberOfRows, matrix.NumberOfColumns);
+
+        for (int i = 0; i < matrix.NumberOfRows; i++)
+        {
+            for (int j = 0; j < matrix.NumberOfColumns; j++)
+            {
+                result[i, j] = matrix[i, j] == 0 ? 1 : 0;
+            }
+        }
+
+        return result;
+    }
+}
+                    //koniec zadania 8
